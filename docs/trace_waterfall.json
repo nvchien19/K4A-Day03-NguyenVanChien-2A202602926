@@ -1,29 +1,234 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
+    "query": "Chính sách đặt phòng họp quy định mỗi lần đặt tối đa kéo dài bao lâu và trước bao nhiêu ngày so với lịch họp?",
     "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Theo chính sách đặt phòng họp, mỗi lần đặt phòng tối đa kéo dài không quá 2 giờ. Người dùng có thể đặt phòng trước tối đa 3 ngày so với lịch họp.",
+    "latency_ms": 4264.55
   },
   {
     "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Kiểm tra các phòng họp còn trống vào ngày 20/09/2026 trong khung giờ 14:00-15:00.",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "room_availability_query",
     "arguments": {
-      "student_id": "SV2026001"
+      "date_str": "20/09/2026",
+      "time_slot": "14:00-15:00"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "date_str": "20/09/2026",
+      "time_slot": "14:00-15:00",
+      "available_rooms": [
+        {
+          "name": "Phòng Họp B202",
+          "capacity": 8,
+          "equipment": [
+            "TV 65 inch"
+          ],
+          "room_id": "BR-B202",
+          "busy_slots": []
+        },
+        {
+          "name": "Hội trường C03",
+          "capacity": 100,
+          "equipment": [
+            "Loa Bluetooth",
+            "Máy chiếu"
+          ],
+          "room_id": "HALL-C03",
+          "busy_slots": [
+            "08:00-10:00"
+          ]
+        }
+      ]
+    },
+    "latency_ms": 2034.01
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Kiểm tra các phòng họp còn trống vào ngày 20/09/2026 trong khung giờ 14:00-15:00.",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
-    "latency_ms": 10.0
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Vào ngày 20/09/2026 trong khung giờ 14:00-15:00, có hai phòng họp còn trống như sau:\n\n1. **Phòng Họp B202**\n   - Sức chứa: 8 người\n   - Thiết bị: TV 65 inch\n   - Mã phòng: BR-B202\n\n2. **Hội trường C03**\n   - Sức chứa: 100 người\n   - Thiết bị: Loa Bluetooth, Máy chiếu\n   - Mã phòng: HALL-C03\n\nBạn cần đặt phòng nào?",
+    "latency_ms": 2566.64
+  },
+  {
+    "step": 1,
+    "query": "Đặt phòng họp BR-B202 vào khung giờ 09:00-10:30 ngày 21/09/2026 cho nhân viên Nguyễn Văn Chiến (EMP0003), có kèm thiết bị máy chiếu.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "room_availability_query",
+    "arguments": {
+      "date_str": "21/09/2026",
+      "time_slot": "09:00-10:30",
+      "room_id": "BR-B202"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "room_id": "BR-B202",
+      "date_str": "21/09/2026",
+      "time_slot": "09:00-10:30",
+      "availability": "AVAILABLE",
+      "room_data": {
+        "name": "Phòng Họp B202",
+        "capacity": 8,
+        "equipment": [
+          "TV 65 inch"
+        ]
+      },
+      "busy_slots": []
+    },
+    "latency_ms": 1716.77
+  },
+  {
+    "step": 2,
+    "query": "Đặt phòng họp BR-B202 vào khung giờ 09:00-10:30 ngày 21/09/2026 cho nhân viên Nguyễn Văn Chiến (EMP0003), có kèm thiết bị máy chiếu.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "room_booking",
+    "arguments": {
+      "room_id": "BR-B202",
+      "date_str": "21/09/2026",
+      "time_slot": "09:00-10:30",
+      "employee_id": "EMP0003",
+      "booker_name": "Nguyễn Văn Chiến",
+      "equipment": [
+        "Máy chiếu"
+      ]
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "BK-BR-B202-1",
+      "room_id": "BR-B202",
+      "date_str": "21/09/2026",
+      "time_slot": "09:00-10:30",
+      "employee_id": "EMP0003",
+      "booker_name": "Nguyễn Văn Chiến",
+      "equipment": [
+        "Máy chiếu"
+      ],
+      "message": "Đặt phòng thành công: Phòng Họp B202 (BR-B202) vào 09:00-10:30 ngày 21/09/2026 cho Nguyễn Văn Chiến."
+    },
+    "latency_ms": 2243.98
+  },
+  {
+    "step": 3,
+    "query": "Đặt phòng họp BR-B202 vào khung giờ 09:00-10:30 ngày 21/09/2026 cho nhân viên Nguyễn Văn Chiến (EMP0003), có kèm thiết bị máy chiếu.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Phòng họp B202 (BR-B202) đã được đặt thành công vào khung giờ 09:00-10:30 ngày 21/09/2026 cho nhân viên Nguyễn Văn Chiến (EMP0003), kèm thiết bị máy chiếu. \n\nMã đặt phòng là: BK-BR-B202-1. Nếu bạn cần thêm thông tin gì, hãy cho tôi biết!",
+    "latency_ms": 2619.27
+  },
+  {
+    "step": 1,
+    "query": "Tôi cần một phòng họp có sức chứa từ 20 người cho ngày 22/09/2026 khung giờ 09:00-11:00. Hãy tìm phòng phù hợp và đặt giúp tôi với tên người đặt là Chị Lan (EMP0002).",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "room_availability_query",
+    "arguments": {
+      "date_str": "22/09/2026",
+      "time_slot": "09:00-11:00"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "date_str": "22/09/2026",
+      "time_slot": "09:00-11:00",
+      "available_rooms": [
+        {
+          "name": "Phòng Họp A101",
+          "capacity": 20,
+          "equipment": [
+            "Máy chiếu",
+            "Bảng trắng"
+          ],
+          "room_id": "BR-A101",
+          "busy_slots": []
+        },
+        {
+          "name": "Phòng Họp B202",
+          "capacity": 8,
+          "equipment": [
+            "TV 65 inch"
+          ],
+          "room_id": "BR-B202",
+          "busy_slots": []
+        },
+        {
+          "name": "Hội trường C03",
+          "capacity": 100,
+          "equipment": [
+            "Loa Bluetooth",
+            "Máy chiếu"
+          ],
+          "room_id": "HALL-C03",
+          "busy_slots": []
+        }
+      ]
+    },
+    "latency_ms": 2458.06
+  },
+  {
+    "step": 2,
+    "query": "Tôi cần một phòng họp có sức chứa từ 20 người cho ngày 22/09/2026 khung giờ 09:00-11:00. Hãy tìm phòng phù hợp và đặt giúp tôi với tên người đặt là Chị Lan (EMP0002).",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "room_booking",
+    "arguments": {
+      "room_id": "BR-A101",
+      "date_str": "22/09/2026",
+      "time_slot": "09:00-11:00",
+      "employee_id": "EMP0002",
+      "booker_name": "Chị Lan",
+      "equipment": [
+        "Máy chiếu",
+        "Bảng trắng"
+      ]
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "BK-BR-A101-1",
+      "room_id": "BR-A101",
+      "date_str": "22/09/2026",
+      "time_slot": "09:00-11:00",
+      "employee_id": "EMP0002",
+      "booker_name": "Chị Lan",
+      "equipment": [
+        "Máy chiếu",
+        "Bảng trắng"
+      ],
+      "message": "Đặt phòng thành công: Phòng Họp A101 (BR-A101) vào 09:00-11:00 ngày 22/09/2026 cho Chị Lan."
+    },
+    "latency_ms": 1868.67
+  },
+  {
+    "step": 3,
+    "query": "Tôi cần một phòng họp có sức chứa từ 20 người cho ngày 22/09/2026 khung giờ 09:00-11:00. Hãy tìm phòng phù hợp và đặt giúp tôi với tên người đặt là Chị Lan (EMP0002).",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Phòng họp đã được đặt thành công! \n\nThông tin đặt phòng:\n- **Phòng**: Phòng Họp A101 (Mã phòng: BR-A101)\n- **Ngày**: 22/09/2026\n- **Khung giờ**: 09:00 - 11:00\n- **Người đặt**: Chị Lan (Mã nhân viên: EMP0002)\n- **Thiết bị**: Máy chiếu, Bảng trắng\n\nNếu bạn cần thêm thông tin hoặc hỗ trợ gì khác, hãy cho tôi biết!",
+    "latency_ms": 2417.66
+  },
+  {
+    "step": 1,
+    "query": "Kiểm tra tình trạng phòng họp HALL-Z99 vào ngày 20/09/2026 khung giờ 14:00-15:00.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "room_availability_query",
+    "arguments": {
+      "date_str": "20/09/2026",
+      "time_slot": "14:00-15:00",
+      "room_id": "HALL-Z99"
+    },
+    "observation": {
+      "status": "NOT_FOUND",
+      "room_id": "HALL-Z99",
+      "message": "Không tìm thấy phòng họp có mã 'HALL-Z99'"
+    },
+    "latency_ms": 1918.59
+  },
+  {
+    "step": 2,
+    "query": "Kiểm tra tình trạng phòng họp HALL-Z99 vào ngày 20/09/2026 khung giờ 14:00-15:00.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Phòng họp có mã 'HALL-Z99' không tồn tại trong hệ thống. Vui lòng kiểm tra lại mã phòng họp hoặc cung cấp mã phòng khác để tôi có thể hỗ trợ bạn.",
+    "latency_ms": 1462.31
   }
 ]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Chính sách đặt phòng họp quy định mỗi lần đặt tối đa kéo dài bao lâu và trước bao nhiêu ngày so với lịch họp?",
+    "expected_behavior": "Chatbot trả lời trực tiếp từ System Prompt, không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Kiểm tra các phòng họp còn trống vào ngày 20/09/2026 trong khung giờ 14:00-15:00.",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu, tự động phát sinh Tool Call 'room_availability_query' với date_str='20/09/2026' và time_slot='14:00-15:00'.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "appointment_booking",
+    "question": "Đặt phòng họp BR-B202 vào khung giờ 09:00-10:30 ngày 21/09/2026 cho nhân viên Nguyễn Văn Chiến (EMP0003), có kèm thiết bị máy chiếu.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'room_booking' với đúng room_id, thời gian và thông tin nhân viên đặt phòng.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Tôi cần một phòng họp có sức chứa từ 20 người cho ngày 22/09/2026 khung giờ 09:00-11:00. Hãy tìm phòng phù hợp và đặt giúp tôi với tên người đặt là Chị Lan (EMP0002).",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct: Tra cứu phòng trống đủ sức chứa bằng 'room_availability_query' trước, sau đó đặt phòng phù hợp bằng 'room_booking'.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Kiểm tra tình trạng phòng họp HALL-Z99 vào ngày 20/09/2026 khung giờ 14:00-15:00.",
+    "expected_behavior": "Agent nhận kết quả NOT_FOUND từ Tool 'room_availability_query' vì mã phòng không tồn tại và đưa ra phản hồi lịch sự, chính xác không bịa đặt dữ liệu.",
+    "complexity": "Medium"
+  }
+]
