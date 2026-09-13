@@ -201,7 +201,7 @@ class OpenAIProvider(BaseLLMProvider):
             if system_prompt:
                 messages.append({"role": "system", "content": system_prompt})
             messages.append({"role": "user", "content": prompt})
-            response = client.chat.completions.create(model=self.model_name, messages=messages)
+            response = client.chat.completions.create(model=self.model_name, messages=messages, timeout=90)
             return response.choices[0].message.content or ""
         except Exception as e:
             return f"[OpenAI Exception]: {str(e)}"
@@ -237,7 +237,8 @@ class OpenAIProvider(BaseLLMProvider):
                 model=self.model_name,
                 messages=messages,
                 tools=tools if tools else None,
-                tool_choice="auto" if tools else None
+                tool_choice="auto" if tools else None,
+                timeout=90
             )
 
             msg = response.choices[0].message
